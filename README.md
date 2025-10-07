@@ -172,13 +172,26 @@ WHERE worldwide_gross_income IS NOT NULL
 ```
 
 
-**Insights
+---
 
-The dataset initially contained duplicates and unstructured columns that required cleaning.
+## 💡 Insights
 
-ROI revealed a very different ranking compared to total revenue — some small productions far outperformed blockbusters.
+- 🧹 **Data quality required attention:**  
+  The dataset initially contained **duplicates and unstructured columns**, which needed thorough cleaning and renaming before meaningful analysis could begin.
 
-High ROI correlates more strongly with budget control than with raw box office success.
+- 🎬 **ROI told a different story:**  
+  The profitability ranking differed greatly from total revenue — several **small, low-budget films** outperformed major blockbusters in ROI.
 
-Creating a reusable SQL view (roi_view) helps simplify future queries and Tableau integrations.
-**
+- 💰 **Budget control drives efficiency:**  
+  A **high ROI correlates more strongly with production cost management** than with absolute box office earnings.
+
+- 🧱 **Reusable data structures improve scalability:**  
+  Creating the SQL view **`roi_view`** simplified subsequent analyses and made it easier to connect the dataset with **Tableau dashboards**.
+
+---
+
+> 🎯 **Takeaway:**  
+> Clean, structured data and reusable SQL logic reveal deeper business insights — sometimes, *profitability hides where least expected*.
+
+---
+
