@@ -51,7 +51,7 @@ Result: 1118 records found in the raw dataset.
 Each movie title may appear more than once (e.g., re-releases or extended editions).
 We check for duplicates based on title and year.
 
-```
+```sql
 SELECT COUNT(*)
 FROM (
     SELECT DISTINCT title, year
@@ -68,7 +68,7 @@ Result: 558 unique movies after removing duplicates.
 Some column names contained spaces and parentheses, making them difficult to query.
 We renamed them for clarity and consistency.
 
-```
+```sql
 ALTER TABLE top500 
 CHANGE `worldwide gross (m)` worldwide_gross DECIMAL(15,2);
 
@@ -84,7 +84,7 @@ Columns cleaned: worldwide_gross, budget_millions
 
 The source and budget source columns contained mostly null or empty values and were removed from analysis.
 
-```
+```sql
 SELECT 
     COUNT(source) AS source_not_null,
     COUNT(`budget source`) AS budget_source_not_null
@@ -101,7 +101,7 @@ We calculate Return on Investment (ROI) as:
 
 ROI = (worldwide_gross / budget_millions) × 100
 
-```
+```sql
 SELECT
     title,
     year,
@@ -129,7 +129,7 @@ Top 10 Most Profitable Movies
 
 We rank the top 10 movies with the highest ROI.
 
-```
+```sql
 SELECT
     title,
     year,
@@ -158,7 +158,7 @@ To avoid recalculating the ROI formula in multiple queries, we create a SQL view
 This view stores the calculated ROI for each movie using the cleaned dataset.
 It helps streamline future analyses — for example, grouping ROI by decade or visualizing results in Tableau
 
-```
+```sql
 CREATE VIEW roi_view AS
 SELECT 
     title,
