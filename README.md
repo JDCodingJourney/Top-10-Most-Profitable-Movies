@@ -1,185 +1,108 @@
-🎬 Top 10 Most Profitable Hollywood Movies — SQL & Tableau AnalysisThis project analyzes the Top 500 highest-grossing Hollywood movies of all time. The dataset includes movie titles, release years, budgets, domestic and international grosses, and worldwide revenues.
+# 🎬 Top 500 Hollywood Movies — SQL & Tableau Analysis
 
-The main goal was to:
-Explore and clean the dataset using SQL (MySQL Workbench).
-Calculate a key metric: Return on Investment (ROI).
-Identify trends and insights (e.g., most profitable movies).
-Prepare the data for visualization in Tableau.
+> A complete SQL project exploring profitability in the film industry using ROI analysis and data visualization.
 
-Dataset
+---
 
-Columns of interest:
+## 📘 Project Overview
+This project analyzes the **Top 500 highest-grossing Hollywood movies of all time** using SQL for data exploration and Tableau for visualization.  
+The goal is to understand which films achieved the highest **Return on Investment (ROI)** and what patterns emerge across time.
 
-title → Movie name.
+---
 
-year → Release year.
+## ⚙️ Tools Used
+- **MySQL Workbench** → Data cleaning, transformations, and analysis.  
+- **Tableau Public** → Data visualization and storytelling.  
+- **GitHub** → Project version control and portfolio presentation.  
 
-budget_millions → Production budget in millions (cleaned).
+---
 
-worldwide_gross → Worldwide box office revenue (cleaned).
+## 📂 Dataset Overview
+The dataset includes **1118 records** of Hollywood movies with the following key columns:
 
-domestic_gross, international_gross → Split revenue.
+| Column | Description |
+|:--|:--|
+| `title` | Movie title |
+| `year` | Release year |
+| `worldwide gross (m)` | Global box office revenue (in millions) |
+| `budget (millions)` | Production budget (in millions) |
+| `domestic gross (m)` | U.S. box office |
+| `international gross (m)` | Overseas box office |
+| `source`, `budget source` | Information links (mostly empty, dropped later) |
 
-source, budget source → Dropped (incomplete and irrelevant).
+---
 
-Initial dataset: 1118 rows
-After cleaning duplicates: ~558 unique movies.
+## 🧹 Data Exploration and Cleaning
 
- ## View all records ##
- ```SELECT * 
-FROM project.top500;
+### 1️⃣ Checking Total Number of Records
+The first step is to verify the total number of records in the dataset.
 
-SELECT count(*)
-FROM top500;```
-
-FROM project.top500;
-
-SELECT count(*)
-FROM top500;```
-
-## Confirm the initial dataset size. We found 1118 records. ## 
-
-```SELECT COUNT(NULLIF(TRIM(source), ''))
-FROM top500;```
-
-## Check duplicated titles ##
-```SELECT COUNT(title) 
-FROM top500 
-GROUP BY title 
-HAVING COUNT(title) > 1;```
-
-## Count unique movies (by title and year) ##
-
-```SELECT Count(*)
-FROM (SELECT DISTINCT title, year
-     FROM top500) AS sub
-     ;```
-     
-## Column Cleaning ##
-
--- Verify columns with problematic names
-     
-```SELECT `worldwide gross (m)` AS worldwide_gross, `budget_millions`
-FROM top500;```
-
--- Rename columns for analysis
-
-```ALTER TABLE top500 
-CHANGE `worldwide gross (m)` worldwide_gross DECIMAL(15,2);
-
-ALTER TABLE top500 
-CHANGE `budget_millions` budget_millions DECIMAL(15,2);```
-
-## Count non-null values in source-related columns ##
-
-```SELECT 
-   COUNT(source) AS source_not_null,
-   COUNT(`budget source`) AS budget_source_not_null
+```sql
+SELECT COUNT(*) 
 FROM top500;
-;```
+```
 
+##<img width="1875" height="355" alt="image" src="https://github.com/user-attachments/assets/e0c2c8d5-b0fb-4d2b-b926-010055a14c17" />##
 
-## ROI calculated for all movies ##
+Result: 1118 records found in the raw dataset.
 
-```SELECT
-   title,
-   year,
-   worldwide_gross,
-   budget_millions,
-   ROUND((worldwide_gross / budget_millions) * 100, 2) AS ROI
+2️⃣ Identifying Duplicate Movies
+
+Each movie title may appear more than once (e.g., re-releases or extended editions).
+We check for duplicates based on title and year.
+
+```
+SELECT COUNT(*)
 FROM (
-   SELECT DISTINCT
-       title,
-       year,
-       worldwide_gross,
-       budget_millions
-   FROM top500
-) AS unique_movies
-ORDER BY ROI DESC;```
+    SELECT DISTINCT title, year
+    FROM top500
+) AS sub;
+```
 
+<img width="102" height="352" alt="image" src="https://github.com/user-attachments/assets/484d8ca8-84c8-45bd-94ed-c177c4072490" />
 
-## Top 10 Most Profitable Movies ##
+Result: 558 unique movies after removing duplicates.
 
-```SELECT
-   title,
-   year,
-   worldwide_gross,
-   budget_millions,
-   ROUND((worldwide_gross / budget_millions) * 100, 2) AS ROI
-   
-FROM (
-   SELECT DISTINCT
-       title,
-       year,
-       worldwide_gross,
-       budget_millions
-   FROM top500
-) AS unique_movies
-ORDER BY ROI DESC
-LIMIT 10;```
+3️⃣ Renaming Columns
 
-## Resure ROI view with a temporaty table ##
+Some column names contained spaces and parentheses, making them difficult to query.
+We renamed them for clarity and consistency.
 
-```CREATE VIEW roi_view AS
-SELECT 
-   title,
-   year,
-   worldwide_gross_income,
-   production_budget,
-   (worldwide_gross_income - production_budget) / production_budget * 100 AS roi
-FROM top500
-WHERE worldwide_gross_income IS NOT NULL 
- AND production_budget IS NOT NULL;```
-
-
-
-
-
-## Confirm the initial dataset size. We found 1118 records. ## 
-
-```SELECT COUNT(NULLIF(TRIM(source), ''))
-FROM top500;```
-
-## Check duplicated titles ##
-```SELECT COUNT(title) 
-FROM top500 
-GROUP BY title 
-HAVING COUNT(title) > 1;```
-
-## Count unique movies (by title and year) ##
-
-```SELECT Count(*)
-FROM (SELECT DISTINCT title, year
-	  FROM top500) AS sub
-      ;```
-      
-## Column Cleaning ##
-
--- Verify columns with problematic names
-      
-```SELECT `worldwide gross (m)` AS worldwide_gross, `budget_millions`
-FROM top500;```
-
--- Rename columns for analysis
-
-```ALTER TABLE top500 
+```
+ALTER TABLE top500 
 CHANGE `worldwide gross (m)` worldwide_gross DECIMAL(15,2);
 
 ALTER TABLE top500 
-CHANGE `budget_millions` budget_millions DECIMAL(15,2);```
+CHANGE `budget (millions)` budget_millions DECIMAL(15,2);
+```
 
-## Count non-null values in source-related columns ##
+<img width="534" height="47" alt="image" src="https://github.com/user-attachments/assets/8462e4a1-a134-4279-b685-283f1d17a569" />
 
-```SELECT 
+Columns cleaned: worldwide_gross, budget_millions
+
+4️⃣ Cleaning Unnecessary Columns
+
+The source and budget source columns contained mostly null or empty values and were removed from analysis.
+
+```
+SELECT 
     COUNT(source) AS source_not_null,
     COUNT(`budget source`) AS budget_source_not_null
 FROM top500;
-;```
+```
 
+<img width="253" height="43" alt="image" src="https://github.com/user-attachments/assets/106fd3ab-76f5-4e5f-9e71-fe8bbc7c0c79" />
 
-## ROI calculated for all movies ##
+Only ~85% of rows contained useful entries → columns dropped.
 
-```SELECT
+ROI Calculation
+
+We calculate Return on Investment (ROI) as:
+
+ROI = (worldwide_gross / budget_millions) × 100
+
+```
+SELECT
     title,
     year,
     worldwide_gross,
@@ -193,18 +116,26 @@ FROM (
         budget_millions
     FROM top500
 ) AS unique_movies
-ORDER BY ROI DESC;```
+ORDER BY ROI DESC;
+
+```
+
+<img width="455" height="355" alt="image" src="https://github.com/user-attachments/assets/fd69d82b-c691-415c-9a99-e05fcde467ad" />
 
 
-## Top 10 Most Profitable Movies ##
+Result: ROI calculated for all unique movies, rounded to two decimals.
 
-```SELECT
+Top 10 Most Profitable Movies
+
+We rank the top 10 movies with the highest ROI.
+
+```
+SELECT
     title,
     year,
     worldwide_gross,
     budget_millions,
     ROUND((worldwide_gross / budget_millions) * 100, 2) AS ROI
-    
 FROM (
     SELECT DISTINCT
         title,
@@ -214,11 +145,21 @@ FROM (
     FROM top500
 ) AS unique_movies
 ORDER BY ROI DESC
-LIMIT 10;```
+LIMIT 10;
+```
 
-## Resure ROI view with a temporaty table ##
+<img width="459" height="192" alt="image" src="https://github.com/user-attachments/assets/31a0b4e2-5e3c-4271-843f-ce478047e728" />
 
-```CREATE VIEW roi_view AS
+The highest ROI often comes from low-budget films that became global hits.
+
+Creating a Reusable ROI View
+
+To avoid recalculating the ROI formula in multiple queries, we create a SQL view named roi_view.
+This view stores the calculated ROI for each movie using the cleaned dataset.
+It helps streamline future analyses — for example, grouping ROI by decade or visualizing results in Tableau
+
+```
+CREATE VIEW roi_view AS
 SELECT 
     title,
     year,
@@ -227,8 +168,17 @@ SELECT
     (worldwide_gross_income - production_budget) / production_budget * 100 AS roi
 FROM top500
 WHERE worldwide_gross_income IS NOT NULL 
-  AND production_budget IS NOT NULL;```
+  AND production_budget IS NOT NULL;
+```
 
 
+**Insights
 
+The dataset initially contained duplicates and unstructured columns that required cleaning.
 
+ROI revealed a very different ranking compared to total revenue — some small productions far outperformed blockbusters.
+
+High ROI correlates more strongly with budget control than with raw box office success.
+
+Creating a reusable SQL view (roi_view) helps simplify future queries and Tableau integrations.
+**
