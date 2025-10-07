@@ -27,57 +27,57 @@ Initial dataset: 1118 rows
 After cleaning duplicates: ~558 unique movies.
 
  ## View all records ##
- SELECT * 
+ ```SELECT * 
 FROM project.top500;
 
 SELECT count(*)
-FROM top500;
+FROM top500;```
 
 ## Confirm the initial dataset size. We found 1118 records. ## 
 
-SELECT COUNT(NULLIF(TRIM(source), ''))
-FROM top500;
+```SELECT COUNT(NULLIF(TRIM(source), ''))
+FROM top500;```
 
 ## Check duplicated titles ##
-SELECT COUNT(title) 
+```SELECT COUNT(title) 
 FROM top500 
 GROUP BY title 
-HAVING COUNT(title) > 1;
+HAVING COUNT(title) > 1;```
 
 ## Count unique movies (by title and year) ##
 
-SELECT Count(*)
+```SELECT Count(*)
 FROM (SELECT DISTINCT title, year
 	  FROM top500) AS sub
-      ;
+      ;```
       
 ## Column Cleaning ##
 
 -- Verify columns with problematic names
       
-SELECT `worldwide gross (m)` AS worldwide_gross, `budget_millions`
-FROM top500;
+```SELECT `worldwide gross (m)` AS worldwide_gross, `budget_millions`
+FROM top500;```
 
 -- Rename columns for analysis
 
-ALTER TABLE top500 
+```ALTER TABLE top500 
 CHANGE `worldwide gross (m)` worldwide_gross DECIMAL(15,2);
 
 ALTER TABLE top500 
-CHANGE `budget_millions` budget_millions DECIMAL(15,2);
+CHANGE `budget_millions` budget_millions DECIMAL(15,2);```
 
 ## Count non-null values in source-related columns ##
 
-SELECT 
+```SELECT 
     COUNT(source) AS source_not_null,
     COUNT(`budget source`) AS budget_source_not_null
 FROM top500;
-;
+;```
 
 
 ## ROI calculated for all movies ##
 
-SELECT
+```SELECT
     title,
     year,
     worldwide_gross,
@@ -91,12 +91,12 @@ FROM (
         budget_millions
     FROM top500
 ) AS unique_movies
-ORDER BY ROI DESC;
+ORDER BY ROI DESC;```
 
 
 ## Top 10 Most Profitable Movies ##
 
-SELECT
+```SELECT
     title,
     year,
     worldwide_gross,
@@ -112,11 +112,11 @@ FROM (
     FROM top500
 ) AS unique_movies
 ORDER BY ROI DESC
-LIMIT 10;
+LIMIT 10;```
 
 ## Resure ROI view with a temporaty table ##
 
-CREATE VIEW roi_view AS
+```CREATE VIEW roi_view AS
 SELECT 
     title,
     year,
@@ -125,7 +125,7 @@ SELECT
     (worldwide_gross_income - production_budget) / production_budget * 100 AS roi
 FROM top500
 WHERE worldwide_gross_income IS NOT NULL 
-  AND production_budget IS NOT NULL;
+  AND production_budget IS NOT NULL;```
 
 
 
