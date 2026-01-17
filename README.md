@@ -21,7 +21,7 @@ Each chart provides an intuitive view of how production budgets and global earni
 
 
 
-**👉 [Click here to view it live on Tableau Public](https://public.tableau.com/authoring/top_500_17598593016230/Hoja1#1)**
+**👉 [Click here to view it live on Tableau Public](https://public.tableau.com/authoring/top_500_17598593016230/Hoja1#1](https://public.tableau.com/app/profile/jose.baquero/viz/top_500_17598593016230/DashboardTOP500)**
 
 ---
 
