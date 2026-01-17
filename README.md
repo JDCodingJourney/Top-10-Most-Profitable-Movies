@@ -23,6 +23,8 @@ Each chart provides an intuitive view of how production budgets and global earni
 
 **👉 [Click here to view it live on Tableau Public](https://public.tableau.com/views/top_500_17598593016230/DashboardTOP500?:language=es-ES&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
 
+<img width="3206" height="1101" alt="Dashboard TOP500" src="https://github.com/user-attachments/assets/cc37b1c8-0d5a-4363-86f4-b5f109ae6169" />
+
 ---
 
 ### 💡 Key Insights from the Dashboard
